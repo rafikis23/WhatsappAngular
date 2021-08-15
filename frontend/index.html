@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" href="assets/css/all.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-normal" id="brandLink" href="#">WhastApp</a>
+            <div class="chat-header d-none" id="chatHeader">
+                <button class="boton-back" title="volver" onclick="mostrarListaChats(true)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <img src="assets/img/profile-pics/oolong.jpg" class="rounded-circle big-avatar" id="avatarChatUsuario" alt="avatar del usuario">
+                <div class="usuario-chat">
+                    <span id="nombreChatUsuario"></span>
+                    <span>Online</span>
+                </div>
+            </div>
+            <button class="ml-auto selector-usuario" id="selectorUsuario" onclick="toggleListaUsuarios()">
+                <img src="assets/img/profile-pics/goku.jpg" class="rounded-circle mini-avatar" id="avatarSelectUsuario" alt="Seleccionar usuario">
+                <i class="fas fa-caret-down"></i>
+            </button>
+            <div class="container contenedor-lista-usuarios" id="contenedorListaUsuarios">
+                <span>Seleccione un usuario</span>
+                <div class="d-flex flex-row flex-wrap justify-content-start lista-usuarios" id="listaUsuarios">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="contenido" id="contenido">
+        <ul class="nav justify-content-around nav-pills mb-3 pt-3" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pillsChatsTab" data-bs-toggle="pill" data-bs-target="#pillsChats" type="button" role="tab" aria-controls="pillsChats" aria-selected="true">CHATS</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pillsContactsTab" data-bs-toggle="pill" data-bs-target="#pillsContacts" type="button" role="tab" aria-controls="pillsContacts" aria-selected="false">CONTACTS</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade  show active" id="pillsChats" role="tabpanel" aria-labelledby="pillsChatsTab">
+                <!-- <div class="chat-item">
+                    <img src="assets/img/profile-pics/kami.jpg" class="rounded-circle big-avatar" alt="avatar del usuario">
+                    <div class="cuerpo-chat">
+                        <div class="encabezado-chat">
+                            <span>Usuario</span>
+                            <span>xx:xx PM</span>
+                        </div>
+                        <span>Último mensaje</span>
+                    </div>
+                </div>
+                <div class="chat-item">
+                    <img src="assets/img/profile-pics/kami.jpg" class="rounded-circle big-avatar" alt="avatar del usuario">
+                    <div class="cuerpo-chat">
+                        <div class="encabezado-chat">
+                            <span>Usuario</span>
+                            <span>xx:xx PM</span>
+                        </div>
+                        <span>Último mensaje</span>
+                    </div>
+                </div>
+                <div class="chat-item">
+                    <img src="assets/img/profile-pics/kami.jpg" class="rounded-circle big-avatar" alt="avatar del usuario">
+                    <div class="cuerpo-chat">
+                        <div class="encabezado-chat">
+                            <span>Usuario</span>
+                            <span>xx:xx PM</span>
+                        </div>
+                        <span>Último mensaje</span>
+                    </div>
+                </div> -->
+            </div>
+
+            <div class="tab-pane fade" id="pillsContacts" role="tabpanel" aria-labelledby="pillsContactsTab">
+                <div class="text-center">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#contactModal" onclick="mostrarContactosAgregar()">Nuevo Contacto</button>
+                </div>
+                <div class="contenedor-contactos" id="listaContactos">
+                    <div class="contacto-item">
+                        <img src="assets/img/profile-pics/kami.jpg" class="rounded-circle big-avatar" alt="avatar del usuario">
+                        <div class="cuerpo-contacto">
+                            <span>Usuario</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="contenido-chat d-none" id="contenidoChats">
+        <div class="chat-body" id="chatsBody">
+            <div></div>
+        </div>
+        <div class="chat-footer">
+            <button class="btn btn-stickers" onclick="mostrarListaStickers()">
+                <img src="assets/img/sticker-icon.svg" alt="">
+            </button>
+            <input type="text" id="chatInput" class="form-control">
+            <button class="btn btn-success btn-send" onclick="enviarMensaje('text')">Enviar</button>
+
+            <div class="container fade show contenedor-stickers" id="contenedorStickers">
+                <div class="lista-stickers" id="listaStickers">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agregar Contacto -->
+    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contactModalLabel">Agregar Contacto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="listaContactosNuevos">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="setContactoAgregar(-1)">Cancelar</button>
+                    <button type="button" class="btn btn-success" id="btnAgregarContacto" disabled onclick="agregarContacto()">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/bootstrap.js"></script>
+    <script src="assets/js/controlador.js"></script>
+</body>
+
+</html>
